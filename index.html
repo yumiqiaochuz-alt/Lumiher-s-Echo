@@ -1,3 +1,4 @@
+cat > /mnt/user-data/outputs/lumiher-echo.html << 'HTMLEOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -257,9 +258,6 @@
             50% { transform: scale(1.1); opacity: 0.5; }
         }
 
-        /* ═══════════════════════════════════════════════════════════════
-           ✨ WRITE POPUP — HIDDEN BY DEFAULT, SHOWS ON CLICK
-           ═══════════════════════════════════════════════════════════════ */
         .write-popup-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -496,9 +494,6 @@
             100% { transform: scale(1); }
         }
 
-        /* ═══════════════════════════════════════════════════════════════
-           FEED SECTION
-           ═══════════════════════════════════════════════════════════════ */
         .feed-section {
             padding: 2rem 2rem 4rem;
             max-width: 900px;
@@ -564,7 +559,6 @@
             gap: 1.5rem;
         }
 
-        /* New post animation — slides in from top */
         .post-card {
             background: rgba(255, 255, 255, 0.75);
             backdrop-filter: blur(15px);
@@ -584,14 +578,8 @@
         }
 
         @keyframes slideInFromTop {
-            0% { 
-                opacity: 0; 
-                transform: translateY(-30px) scale(0.95); 
-            }
-            100% { 
-                opacity: 1; 
-                transform: translateY(0) scale(1); 
-            }
+            0% { opacity: 0; transform: translateY(-30px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .post-card::before {
@@ -696,7 +684,6 @@
             transform: scale(1.05);
         }
 
-        /* EMPTY STATE */
         .empty-state {
             text-align: center;
             padding: 4rem 2rem;
@@ -919,53 +906,26 @@
             .empty-state .quote-text { font-size: 1.2rem; }
         }
 
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--cream); }
+        ::-webkit-scrollbar-thumb { background: var(--rose-pink); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--dusty-rose); }
 
-        ::-webkit-scrollbar-track {
-            background: var(--cream);
-        }
+        .fade-in { animation: fadeIn 0.8s ease forwards; opacity: 0; }
+        @keyframes fadeIn { to { opacity: 1; } }
 
-        ::-webkit-scrollbar-thumb {
-            background: var(--rose-pink);
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--dusty-rose);
-        }
-
-        .fade-in {
-            animation: fadeIn 0.8s ease forwards;
-            opacity: 0;
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        .slide-up {
-            animation: slideUp 0.6s ease forwards;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        @keyframes slideUp {
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .slide-up { animation: slideUp 0.6s ease forwards; opacity: 0; transform: translateY(30px); }
+        @keyframes slideUp { to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-    <!-- Floating Petals -->
     <div class="petal" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
     <div class="petal" style="top: 30%; left: 80%; animation-delay: 3s;"></div>
     <div class="petal" style="top: 60%; left: 20%; animation-delay: 6s;"></div>
     <div class="petal" style="top: 80%; left: 70%; animation-delay: 9s;"></div>
     <div class="petal" style="top: 40%; left: 50%; animation-delay: 12s;"></div>
 
-    <!-- Navigation -->
     <nav class="nav-bar">
         <div class="logo">
             <span>🌸</span>
@@ -976,11 +936,9 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="deco-circle deco-1"></div>
         <div class="deco-circle deco-2"></div>
-        
         <div class="hero-content slide-up">
             <div class="hero-badge">✨ Grow Slowly, Glow Gently</div>
             <h1>
@@ -988,7 +946,7 @@
                 Find Your <em>Healing</em>
             </h1>
             <p class="hero-subtitle">
-                An anonymous sanctuary where every feeling is valid, every story is precious, 
+                An anonymous sanctuary where every feeling is valid, every story is precious,
                 and no one ever walks alone. 🌸
             </p>
             <div class="hero-actions">
@@ -1002,79 +960,62 @@
         </div>
     </section>
 
-    <!-- Quote Section -->
     <div class="quote-section fade-in">
         <p class="quote-text">
-            "You are not too sensitive. You are not too much. 
+            "You are not too sensitive. You are not too much.
             Your feelings are valid, your voice matters, and your heart is beautiful."
         </p>
         <p class="quote-author">— A gentle reminder for you today 💗</p>
     </div>
 
-    <!-- ✨ WRITE POPUP — HIDDEN BY DEFAULT -->
-    <div class="write-popup-overlay" id="writePopupOverlay" onclick="closeWritePopup(event)">
-        <div class="write-popup" onclick="event.stopPropagation()">
+    <!-- WRITE POPUP -->
+    <div class="write-popup-overlay" id="writePopupOverlay">
+        <div class="write-popup" id="writePopup">
             <div class="popup-header">
                 <h3><span>✍️</span> Write Your Whisper</h3>
                 <button class="close-btn" onclick="closeWritePopup()">✕</button>
             </div>
             <p class="popup-subtitle">Your words are safe here. No names, no judgment, only love.</p>
 
-            <!-- Mood Selector -->
             <div class="mood-bar" id="moodBar">
-                <div class="mood-pill active" data-cat="love" onclick="selectMood(this)">
-                    <span>💗</span> Love
-                </div>
-                <div class="mood-pill" data-cat="healing" onclick="selectMood(this)">
-                    <span>🌷</span> Healing
-                </div>
-                <div class="mood-pill" data-cat="anxiety" onclick="selectMood(this)">
-                    <span>🌙</span> Anxiety
-                </div>
-                <div class="mood-pill" data-cat="growth" onclick="selectMood(this)">
-                    <span>✨</span> Growth
-                </div>
-                <div class="mood-pill" data-cat="daily" onclick="selectMood(this)">
-                    <span>📖</span> Daily
-                </div>
+                <div class="mood-pill active" data-cat="love" onclick="selectMood(this)"><span>💗</span> Love</div>
+                <div class="mood-pill" data-cat="healing" onclick="selectMood(this)"><span>🌷</span> Healing</div>
+                <div class="mood-pill" data-cat="anxiety" onclick="selectMood(this)"><span>🌙</span> Anxiety</div>
+                <div class="mood-pill" data-cat="growth" onclick="selectMood(this)"><span>✨</span> Growth</div>
+                <div class="mood-pill" data-cat="daily" onclick="selectMood(this)"><span>📖</span> Daily</div>
             </div>
 
-            <!-- Anonymous Name -->
             <div class="name-input-wrap">
-                <input 
-                    type="text" 
-                    class="name-input" 
-                    id="writeName" 
+                <input
+                    type="text"
+                    class="name-input"
+                    id="writeName"
                     placeholder="Your anonymous name (optional)... e.g., Moon Child, Rose Whisperer"
                     maxlength="30"
                 >
             </div>
 
-            <!-- Main Diary Textarea -->
-            <textarea 
-                class="diary-textarea" 
-                id="writeContent" 
+            <textarea
+                class="diary-textarea"
+                id="writeContent"
                 placeholder="What's on your heart today? Write freely here... every feeling is welcome, every story is precious. 💌"
                 maxlength="2000"
                 oninput="updateCounter(this)"
             ></textarea>
             <div class="char-counter" id="charCounter">0 / 2000</div>
 
-            <!-- Submit Button -->
             <button class="submit-post-btn" id="submitBtn" onclick="submitPost()">
                 <span>🌸</span> Share my whisper
             </button>
         </div>
     </div>
 
-    <!-- Main Feed — COMMUNITY WHISPERS -->
     <section class="feed-section" id="feed">
         <div class="section-header slide-up">
             <h2>🌷 Whispers from the Community</h2>
             <p>Real stories from real hearts, shared anonymously with love</p>
         </div>
 
-        <!-- Category Tags -->
         <div class="category-bar">
             <div class="category-tag active" onclick="filterPosts('all')">🌸 All</div>
             <div class="category-tag" onclick="filterPosts('love')">💗 Love</div>
@@ -1084,13 +1025,11 @@
             <div class="category-tag" onclick="filterPosts('daily')">📖 Daily</div>
         </div>
 
-        <!-- Posts Container -->
         <div class="posts-container" id="postsContainer">
             <div class="loading">🌸 Loading whispers from the community...</div>
         </div>
     </section>
 
-    <!-- Instagram Section -->
     <div class="instagram-section">
         <p>Follow us for daily gentle reminders and soft vibes ✨</p>
         <a href="https://www.instagram.com/lumi.her_?igsh=MWprd2Z4Mm9kMmNteg==" target="_blank" rel="noopener noreferrer" class="instagram-link">
@@ -1101,26 +1040,25 @@
         </a>
     </div>
 
-    <!-- Footer -->
     <footer class="footer">
         <p class="footer-text">Made with love for every gentle soul 🌸</p>
         <p class="footer-hearts">💗 ✨ 🌷 🎀 💌</p>
     </footer>
 
-    <!-- Floating Action Button -->
     <button class="fab" onclick="openWritePopup()">✍️</button>
 
     <script>
         const SUPABASE_URL = 'https://htkquhlxvdrjopfxhotu.supabase.co/rest/v1/';
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0a3F1aGx4dmRyam9wZnhob3R1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1MjIyOTUsImV4cCI6MjA5NzA5ODI5NX0.khM75rGVMRIC5s-jTD8Zrw3V0qmOuZI_AADrD9-UaIk'
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0a3F1aGx4dmRyam9wZnhob3R1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1MjIyOTUsImV4cCI6MjA5NzA5ODI5NX0.khM75rGVMRIC5s-jTD8Zrw3V0qmOuZI_AADrD9-UaIk';
 
-        const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // ✅ FIX: destructure createClient from the global supabase object
+        const { createClient } = supabase;
+        const db = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         let selectedCategory = 'all';
         let newPostCategory = 'love';
         let allPosts = [];
 
-        // Healing quotes for empty state
         const healingQuotes = [
             { text: "You are allowed to be both a masterpiece and a work in progress simultaneously.", author: "Sophia Bush" },
             { text: "Healing takes time, and asking for help is a courageous step.", author: "Mariska Hargitay" },
@@ -1135,38 +1073,37 @@
         document.addEventListener('DOMContentLoaded', () => {
             loadPosts();
             setupRealtime();
+
+            // ✅ FIX: close popup when clicking the dark overlay background
+            document.getElementById('writePopupOverlay').addEventListener('click', function(e) {
+                if (e.target === this) closeWritePopup();
+            });
         });
 
-        // ═══════════════════════════════════════════════════════════════
-        // ✨ POPUP SHOW / HIDE
-        // ═══════════════════════════════════════════════════════════════
+        // ── POPUP ──────────────────────────────────────────────────────
 
         function openWritePopup() {
             const overlay = document.getElementById('writePopupOverlay');
+            overlay.style.display = 'flex';
+            // Force reflow so transition fires
+            overlay.offsetHeight;
             overlay.classList.add('active');
             document.body.style.overflow = 'hidden';
-            
-            setTimeout(() => {
-                document.getElementById('writeContent').focus();
-            }, 300);
+            setTimeout(() => document.getElementById('writeContent').focus(), 300);
         }
 
-        function closeWritePopup(event) {
-            if (!event || event.target === document.getElementById('writePopupOverlay')) {
-                const overlay = document.getElementById('writePopupOverlay');
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
+        function closeWritePopup() {
+            const overlay = document.getElementById('writePopupOverlay');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+            setTimeout(() => { overlay.style.display = 'none'; }, 300);
         }
 
-        // Close on Escape key
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') closeWritePopup();
         });
 
-        // ═══════════════════════════════════════════════════════════════
-        // ✨ WRITE SECTION FUNCTIONS
-        // ═══════════════════════════════════════════════════════════════
+        // ── WRITE SECTION ──────────────────────────────────────────────
 
         function selectMood(element) {
             document.querySelectorAll('.mood-pill').forEach(pill => pill.classList.remove('active'));
@@ -1177,31 +1114,24 @@
         function updateCounter(textarea) {
             const counter = document.getElementById('charCounter');
             const length = textarea.value.length;
-            const max = 2000;
-            counter.textContent = `${length} / ${max}`;
-            
-            if (length > max * 0.9) {
-                counter.classList.add('warning');
-            } else {
-                counter.classList.remove('warning');
-            }
+            counter.textContent = `${length} / 2000`;
+            counter.classList.toggle('warning', length > 1800);
         }
 
         async function submitPost() {
             const content = document.getElementById('writeContent').value.trim();
             const author = document.getElementById('writeName').value.trim() || 'Anonymous Soul 🌸';
             const submitBtn = document.getElementById('submitBtn');
-            
+
             if (!content) {
                 alert('💌 Please share something from your heart first.');
                 document.getElementById('writeContent').focus();
                 return;
             }
 
-            // Change button to "sent" state
             submitBtn.disabled = true;
             submitBtn.classList.add('sent');
-            submitBtn.innerHTML = '<span>✨</span> Whisper sent';
+            submitBtn.innerHTML = '<span>✨</span> Sending...';
 
             const categoryLabels = {
                 love: '💗 Love',
@@ -1215,70 +1145,52 @@
             const avatar = emojis[Math.floor(Math.random() * emojis.length)];
 
             const newPost = {
-                author: author,
-                avatar: avatar,
+                author,
+                avatar,
                 category: newPostCategory,
                 category_label: categoryLabels[newPostCategory],
-                content: content,
+                content,
                 likes: 0,
                 comments: 0
             };
 
             try {
-                const { error } = await supabase
+                // ✅ FIX: use `db` instead of `supabase`
+                const { data, error } = await db
                     .from('posts')
-                    .insert([newPost]);
+                    .insert([newPost])
+                    .select();
 
                 if (error) throw error;
 
-                // INSTANTLY inject the new post at the TOP of the feed
-                const postHTML = createPostHTML({
-                    ...newPost,
-                    id: 'temp-' + Date.now(),
-                    created_at: new Date().toISOString(),
-                    isNew: true
-                });
+                submitBtn.innerHTML = '<span>✨</span> Whisper sent!';
 
-                const container = document.getElementById('postsContainer');
-                
-                // Remove empty state if it exists
-                const emptyState = container.querySelector('.empty-state');
-                if (emptyState) {
-                    emptyState.remove();
-                }
-
-                // Insert at the TOP
-                container.insertAdjacentHTML('afterbegin', postHTML);
-
-                // Add to allPosts array
-                allPosts.unshift({
-                    ...newPost,
-                    id: 'temp-' + Date.now(),
-                    created_at: new Date().toISOString()
-                });
+                // Clear form
+                document.getElementById('writeContent').value = '';
+                document.getElementById('writeName').value = '';
+                document.getElementById('charCounter').textContent = '0 / 2000';
 
                 // Close popup after short delay
                 setTimeout(() => {
                     closeWritePopup();
-                    
-                    // Clear form
-                    document.getElementById('writeContent').value = '';
-                    document.getElementById('writeName').value = '';
-                    document.getElementById('charCounter').textContent = '0 / 2000';
-                    
-                    // Reset button after 1.5 seconds
+                    scrollToFeed();
+
+                    // Reset button
                     setTimeout(() => {
                         submitBtn.disabled = false;
                         submitBtn.classList.remove('sent');
                         submitBtn.innerHTML = '<span>🌸</span> Share my whisper';
-                    }, 1500);
+                    }, 400);
+                }, 800);
 
-                    // Scroll to feed to see the new post
-                    setTimeout(() => {
-                        scrollToFeed();
-                    }, 200);
+                // Instantly inject new post at top of feed
+                const inserted = data && data[0] ? data[0] : { ...newPost, id: 'temp-' + Date.now(), created_at: new Date().toISOString() };
+                const container = document.getElementById('postsContainer');
+                const emptyState = container.querySelector('.empty-state');
+                if (emptyState) emptyState.remove();
 
-                }, 400);
+                container.insertAdjacentHTML('afterbegin', createPostHTML({ ...inserted, isNew: true }));
+                allPosts.unshift(inserted);
 
             } catch (err) {
                 console.error('Error submitting post:', err);
@@ -1289,18 +1201,16 @@
             }
         }
 
-        // Create post HTML for instant injection
         function createPostHTML(post) {
-            const timeAgo = 'Just now';
+            const timeAgo = post.isNew ? 'Just now' : formatTime(post.created_at);
             const newClass = post.isNew ? 'new-post' : '';
-            
             return `
                 <div class="post-card ${newClass}">
                     <div class="post-header">
                         <div class="post-author">
                             <div class="avatar">${post.avatar || '🌸'}</div>
                             <div class="author-info">
-                                <span class="author-name">${post.author || 'Anonymous Soul 🌸'}</span>
+                                <span class="author-name">${escapeHtml(post.author || 'Anonymous Soul 🌸')}</span>
                                 <span class="post-time">${timeAgo}</span>
                             </div>
                         </div>
@@ -1308,7 +1218,7 @@
                     </div>
                     <div class="post-content">${escapeHtml(post.content)}</div>
                     <div class="post-actions">
-                        <button class="action-btn" onclick="likePost('${post.id}')">
+                        <button class="action-btn" onclick="likePost('${post.id}', this)">
                             <span>🤍</span>
                             <span>${post.likes || 0}</span>
                         </button>
@@ -1320,24 +1230,20 @@
             `;
         }
 
-        // ═══════════════════════════════════════════════════════════════
-        // FEED FUNCTIONS
-        // ═══════════════════════════════════════════════════════════════
+        // ── FEED ───────────────────────────────────────────────────────
 
         async function loadPosts() {
             const container = document.getElementById('postsContainer');
-            
             try {
-                const { data, error } = await supabase
+                // ✅ FIX: use `db` instead of `supabase`
+                const { data, error } = await db
                     .from('posts')
                     .select('*')
                     .order('created_at', { ascending: false });
 
                 if (error) throw error;
-
                 allPosts = data || [];
                 renderPosts();
-
             } catch (err) {
                 console.error('Error loading posts:', err);
                 container.innerHTML = `
@@ -1351,10 +1257,10 @@
 
         function renderPosts() {
             const container = document.getElementById('postsContainer');
-            const filtered = selectedCategory === 'all' 
-                ? allPosts 
+            const filtered = selectedCategory === 'all'
+                ? allPosts
                 : allPosts.filter(p => p.category === selectedCategory);
-            
+
             if (filtered.length === 0) {
                 const randomQuote = healingQuotes[Math.floor(Math.random() * healingQuotes.length)];
                 container.innerHTML = `
@@ -1368,23 +1274,21 @@
                 return;
             }
 
-            container.innerHTML = filtered.map((post, index) => {
-                const timeAgo = formatTime(post.created_at);
-                return `
+            container.innerHTML = filtered.map((post, index) => `
                 <div class="post-card slide-up" style="animation-delay: ${index * 0.1}s">
                     <div class="post-header">
                         <div class="post-author">
                             <div class="avatar">${post.avatar || '🌸'}</div>
                             <div class="author-info">
-                                <span class="author-name">${post.author || 'Anonymous Soul 🌸'}</span>
-                                <span class="post-time">${timeAgo}</span>
+                                <span class="author-name">${escapeHtml(post.author || 'Anonymous Soul 🌸')}</span>
+                                <span class="post-time">${formatTime(post.created_at)}</span>
                             </div>
                         </div>
                         <span class="post-category">${post.category_label || '💗 Love'}</span>
                     </div>
                     <div class="post-content">${escapeHtml(post.content)}</div>
                     <div class="post-actions">
-                        <button class="action-btn" onclick="likePost('${post.id}')">
+                        <button class="action-btn" onclick="likePost('${post.id}', this)">
                             <span>🤍</span>
                             <span>${post.likes || 0}</span>
                         </button>
@@ -1393,15 +1297,13 @@
                         </button>
                     </div>
                 </div>
-            `}).join('');
+            `).join('');
         }
 
         function formatTime(timestamp) {
             if (!timestamp) return 'Just now';
             const date = new Date(timestamp);
-            const now = new Date();
-            const diff = Math.floor((now - date) / 1000);
-
+            const diff = Math.floor((Date.now() - date) / 1000);
             if (diff < 60) return 'Just now';
             if (diff < 3600) return `${Math.floor(diff / 60)} minutes ago`;
             if (diff < 86400) return `${Math.floor(diff / 3600)} hours ago`;
@@ -1419,76 +1321,72 @@
             selectedCategory = category;
             document.querySelectorAll('.category-tag').forEach(tag => {
                 tag.classList.remove('active');
-                if (tag.textContent.toLowerCase().includes(category) || 
-                    (category === 'all' && tag.textContent.includes('All'))) {
+                if (
+                    (category === 'all' && tag.textContent.includes('All')) ||
+                    tag.textContent.toLowerCase().includes(category)
+                ) {
                     tag.classList.add('active');
                 }
             });
             renderPosts();
         }
 
-        async function likePost(id) {
+        async function likePost(id, btn) {
+            // Optimistic UI update
+            const countSpan = btn.querySelector('span:last-child');
+            const currentLikes = parseInt(countSpan.textContent) || 0;
+            countSpan.textContent = currentLikes + 1;
+            btn.querySelector('span:first-child').textContent = '💗';
+            btn.disabled = true;
+
             try {
-                const { data: post } = await supabase
-                    .from('posts')
-                    .select('likes')
-                    .eq('id', id)
-                    .single();
+                // ✅ FIX: use `db` instead of `supabase`
+                const { error } = await db.rpc('increment_likes', { post_id: id });
 
-                const newLikes = (post?.likes || 0) + 1;
-
-                const { error } = await supabase
-                    .from('posts')
-                    .update({ likes: newLikes })
-                    .eq('id', id);
-
-                if (error) throw error;
-                loadPosts();
-
+                // Fallback if RPC not set up — direct update
+                if (error) {
+                    await db
+                        .from('posts')
+                        .update({ likes: currentLikes + 1 })
+                        .eq('id', id);
+                }
             } catch (err) {
                 console.error('Error liking post:', err);
-                alert('💌 Could not like this whisper. Please try again.');
+                // Revert optimistic update
+                countSpan.textContent = currentLikes;
+                btn.querySelector('span:first-child').textContent = '🤍';
+                btn.disabled = false;
             }
         }
 
         async function sharePost(id) {
-            const post = allPosts.find(p => p.id === id);
+            const post = allPosts.find(p => String(p.id) === String(id));
             if (post) {
                 const text = `${post.content}\n\n— Shared from Lumiher's Echo 🌸`;
-                navigator.clipboard.writeText(text).then(() => {
+                try {
+                    await navigator.clipboard.writeText(text);
                     alert('✨ Copied to clipboard! Spread the love.');
-                });
+                } catch {
+                    alert('Could not copy. Please copy manually.');
+                }
             }
         }
 
         function setupRealtime() {
-            supabase
-                .channel('posts')
-                .on('postgres_changes', { event: '*', schema: 'public', table: 'posts' }, (payload) => {
-                    console.log('Realtime update:', payload);
+            // ✅ FIX: use `db` instead of `supabase`
+            db
+                .channel('posts-channel')
+                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'posts' }, () => {
                     loadPosts();
                 })
                 .subscribe();
         }
 
         function scrollToFeed() {
-            document.getElementById('feed').scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'start' 
-            });
+            document.getElementById('feed').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animationPlayState = 'running';
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.slide-up, .fade-in').forEach(el => {
-            observer.observe(el);
-        });
     </script>
 </body>
 </html>
+HTMLEOF
+echo "Done"
