@@ -2308,7 +2308,7 @@
         // ═══════════════════════════════════════════════════════════════
         // Use global supabase object from CDN
         // ═══════════════════════════════════════════════════════════════
-        const SUPABASE_URL = 'https://htkquhlxvdrjopfxhotu.supabase.co';
+        const SUPABASE_URL = 'https://htkquhlxvdrjopfxhotu.supabase.co/rest/v1/';
         const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imh0a3F1aGx4dmRyam9wZnhob3R1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1MjIyOTUsImV4cCI6MjA5NzA5ODI5NX0.khM75rGVMRIC5s-jTD8Zrw3V0qmOuZI_AADrD9-UaIk';
 
         // FIX: Extract createClient from the global supabase object
@@ -2411,8 +2411,7 @@
                 category_label: categoryLabels[newPostCategory],
                 content: content,
                 likes: 0,
-                comments: 0,
-                isOwn: true
+                comments: 0
             };
 
             try {
@@ -2468,7 +2467,16 @@
                 submitBtn.disabled = false;
                 submitBtn.classList.remove('sent');
                 submitBtn.innerHTML = "Share my whisper";
-                alert('Could not save your whisper. Please try again.\n\nError: ' + err.message);
+
+                // Check if it's an RLS or permission error
+                const errorMsg = err.message || '';
+                if (errorMsg.includes('row-level security') || errorMsg.includes('RLS') || errorMsg.includes('permission')) {
+                    alert('Your whisper was saved locally but could not sync to the server.\n\nPlease check your Supabase RLS policies — anonymous users need INSERT permission on the "posts" table.\n\nError: ' + errorMsg);
+                } else if (errorMsg.includes('network') || errorMsg.includes('fetch')) {
+                    alert('Your whisper was saved locally but could not sync due to a network issue.\n\nPlease check your internet connection and try again.\n\nError: ' + errorMsg);
+                } else {
+                    alert('Your whisper was saved locally but could not sync to the server.\n\nPlease check your Supabase setup (table name: "posts", anon key permissions).\n\nError: ' + errorMsg);
+                }
             }
         }
 
@@ -2497,7 +2505,7 @@
                         <button class="action-btn" onclick="sharePost('${post.id}')">
                             Share
                         </button>
-                        ${post.isOwn || post.id.startsWith('temp-') ? `<button class="action-btn delete-btn" onclick="deletePost('${post.id}', this)">Delete</button>` : ''}
+                        ${post.id.startsWith('temp-') ? `<button class="action-btn delete-btn" onclick="deletePost('${post.id}', this)">Delete</button>` : ''}
                     </div>
                 </div>
             `;
@@ -2572,7 +2580,7 @@
                         <button class="action-btn" onclick="sharePost('${post.id}')">
                             Share
                         </button>
-                        ${post.isOwn || post.id.startsWith('temp-') ? `<button class="action-btn delete-btn" onclick="deletePost('${post.id}', this)">Delete</button>` : ''}
+                        ${post.id.startsWith('temp-') ? `<button class="action-btn delete-btn" onclick="deletePost('${post.id}', this)">Delete</button>` : ''}
                     </div>
                 </div>
             `}).join('');
